@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitation Spéciale ✨</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden; /* Empêche le défilement si le bouton sort de l'écran */
+        }
+
+        #container {
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            max-width: 90%;
+            width: 400px;
+            z-index: 10;
+        }
+
+        h1 { color: #880e4f; font-size: 1.4rem; margin-bottom: 30px; line-height: 1.4; }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            min-height: 150px;
+            position: relative;
+        }
+
+        button {
+            padding: 15px 25px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        #yesBtn {
+            background-color: #ff4081;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+        }
+
+        #noBtn {
+            background-color: #424242;
+            color: white;
+            white-space: normal; /* Pour que le texte long s'affiche bien */
+            font-size: 0.8rem;
+        }
+
+        .success-msg {
+            display: none;
+            color: #ad1457;
+            font-size: 1.2rem;
+            font-weight: bold;
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <div id="content">
+            <h1>Me ferais-tu l’honneur d’être mon cavalier pour la soirée des doctoriales ?</h1>
+            <div class="btn-container">
+                <button id="yesBtn">For suuuuure😍</button>
+                <button id="noBtn">non, j’ai un côté attié que je t’ai caché👿</button>
+            </div>
+        </div>
+        <div id="message" class="success-msg">
+            waaw je m’attendais pas à ce que tu acceptes 😍<br><br>Merci mon cavalier 🤭❤️
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const content = document.getElementById('content');
+        const message = document.getElementById('message');
+
+        // Fonction pour déplacer le bouton "Non" de manière aléatoire
+        function moveButton() {
+            const padding = 50;
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+            noBtn.style.width = 'auto'; // Reprend sa taille normale en flottant
+            noBtn.style.zIndex = '1000';
+        }
+
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Empêche le clic sur mobile, force le déplacement
+            moveButton();
+        });
+
+        // Action sur le bouton "Oui"
+        yesBtn.addEventListener('click', () => {
+            content.style.display = 'none';
+            message.style.display = 'block';
+
+            // Lancement des confettis !
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ff4081', '#fce4ec', '#ad1457']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ff4081', '#fce4ec', '#ad1457']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        });
+    </script>
+</body>
+</html>
